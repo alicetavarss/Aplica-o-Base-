@@ -1,0 +1,18 @@
+services:
+  redis-cache:
+    image: redis:alpine
+    container_name: meu_redis_container
+    ports:
+      - "6379:6379"
+
+  backend-api:
+    image: node:18-alpine
+    container_name: meu_node_container
+    working_dir: /usr/src/app
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "3000:3000"
+    command: sh -c "npm install && npm start"
+    depends_on:
+      - redis-cache
